@@ -1,0 +1,244 @@
+------------------------------
+- previews_diagnostics_summary.txt -
+------------------------------
+== DATE:
+
+    Wednesday, December 24, 2025 at 3:27:23 AM Central Standard Time
+    
+    2025-12-24T09:27:23Z
+
+
+
+== VERSION INFO:
+
+    Tools: N/A - v4.6.4 (4L310)
+    PID:   2911)
+    OS:    iPadOS 26.3 (23D5089e)
+    Model: iPad16,6)
+
+
+
+== SESSION GROUP 4371:
+
+    workspace identifier: WorkspaceIdentifier(identifier: F7F038E3-7280-4144-B73D-86CFCEDF17DE)
+    providers: [
+        
+    ]
+    translation units: [
+        /private/var/mobile/Library/Mobile Documents/iCloud~com~apple~Playgrounds/Documents/My App 32.swiftpm/ContentView.swift
+    ]
+    attributes: [
+        Editor(4117):     
+            isAppPreviewEnabled: true
+            suppressAppPreviewWhenPreviewProvidersArePresent: false
+            destinationMode: automatic
+            previewSettings: [
+                App Preview <Role: Previews>:     isEnabled: true
+                    boxedCanvasControlStates: []
+            ]
+    ]
+    session: 4372
+    request sessions: [
+        
+    ]
+
+
+
+== UPDATE SESSION 4372:
+
+    Start Date: Wednesday, December 24, 2025 at 3:25:52 AM Central Standard Time
+    Preview Preflight {
+        Local iPad "iPad" {
+            systemName: iPadOS
+            systemVersion: 26.3
+            orientation: UIDeviceOrientation(rawValue: 3)
+            identifierForVendor: ED3CBA8A-26D7-49B7-AC20-2EF1C6C9AEB9
+            batteryState: UIDeviceBatteryState(rawValue: 0)
+            batteryLevel: -1.0
+        }
+        pid: 3023
+        host bundle: 
+        swift-playgrounds-dev-previews.swift-playgrounds-app.hcxqsrflxfigqhbqgxgykyvesmcx.501.My-App {
+            url: file:///var/mobile/Containers/Data/Application/DF9F42DE-9E23-4D16-B9FD-85998CFF86DE/Library/Caches/com.apple.Playgrounds/DerivedData/My%20App%2032-hcxqsrflxfigqhbqgxgykyvesmcx/XCBuild/Products/Previews-iphoneos/My%20App.app
+            version: 4307
+            attributes: [
+                AgentRoleKey: Previews,
+            ]
+        }
+        builtTargetDescriptions: empty
+    }
+    Preview.AppPreview {
+        Local iPad "iPad" {
+            systemName: iPadOS
+            systemVersion: 26.3
+            orientation: UIDeviceOrientation(rawValue: 3)
+            identifierForVendor: ED3CBA8A-26D7-49B7-AC20-2EF1C6C9AEB9
+            batteryState: UIDeviceBatteryState(rawValue: 0)
+            batteryLevel: -1.0
+        }
+        pid: 3034
+        host bundle: 
+        swift-playgrounds-dev-run.swift-playgrounds-app.hcxqsrflxfigqhbqgxgykyvesmcx.501.My-App {
+            url: file:///var/mobile/Containers/Data/Application/DF9F42DE-9E23-4D16-B9FD-85998CFF86DE/Library/Caches/com.apple.Playgrounds/DerivedData/My%20App%2032-hcxqsrflxfigqhbqgxgykyvesmcx/XCBuild/Products/Run-iphoneos/My%20App.app
+            version: 4378
+            attributes: [
+                AgentRoleKey: Running App,
+            ]
+        }
+        builtTargetDescriptions: empty
+    }
+    Build Graph {
+        My App product (#3)
+           agent (#1)
+           PACKAGE-PRODUCT:My App (#4)
+              ContentView.swift (#2)
+    }
+    Update Plan {
+        BuildIdentifier(destination: PreviewsPipeline.RunDestinationRecipePair<PlaygroundFoundation.RunDestination>(recipe: LocalIOSDestinationRecipe(properties: Run Destination Properties {
+            platform: iphoneos
+            architecture: arm64
+            sdk: 
+            SDK {
+                path: /private/var/containers/Bundle/Application/79942ABC-0C41-411C-97F9-05AAC3FE1E83/Swift Playground.app/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
+                version: 18.1
+            }
+            runtimeVersion: 26.3
+            runtimeBuildNumber: 23D5089e
+            deviceIdentifier: 
+            supportsOnDevice: false
+        }), representation: PlaygroundFoundation.RunDestination), role: Previews) {
+            Destination: AnyRunDestinationRecipe  | default device for iphoneos [
+                Project Application - Previews {
+                    execution point packs [
+                        [source: agent, role: Previews]
+                    ]
+                    translation units [
+                        ContentView.swift (compile in PACKAGE-PRODUCT:My App, link in My App product)
+                    ]
+                    modules [
+                        My App product
+                        PACKAGE-PRODUCT:My App
+                    ]
+                    jit link description [
+                        My App product {
+                            merged static libs [
+                                PACKAGE-PRODUCT:My App
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        BuildIdentifier(destination: PreviewsPipeline.RunDestinationRecipePair<PlaygroundFoundation.RunDestination>(recipe: LocalIOSDestinationRecipe(properties: Run Destination Properties {
+            platform: iphoneos
+            architecture: arm64
+            sdk: 
+            SDK {
+                path: /private/var/containers/Bundle/Application/79942ABC-0C41-411C-97F9-05AAC3FE1E83/Swift Playground.app/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
+                version: 18.1
+            }
+            runtimeVersion: 26.3
+            runtimeBuildNumber: 23D5089e
+            deviceIdentifier: 
+            supportsOnDevice: false
+        }), representation: PlaygroundFoundation.RunDestination), role: Running App) {
+            Destination: AnyRunDestinationRecipe  | default device for iphoneos [
+                Project Application - Running App {
+                    execution point packs [
+                        [source: agent, role: Running App, domain: application]
+                    ]
+                    translation units [
+                        ContentView.swift (compile in PACKAGE-PRODUCT:My App, link in My App product)
+                    ]
+                    modules [
+                        My App product
+                        PACKAGE-PRODUCT:My App
+                    ]
+                    jit link description [
+                        My App product {
+                            merged static libs [
+                                PACKAGE-PRODUCT:My App
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+
+
+
+== UPDATE SESSION 4408:
+
+    Start Date: Wednesday, December 24, 2025 at 3:25:52 AM Central Standard Time
+    Preview.AppPreview {
+        Local iPad "iPad" {
+            systemName: iPadOS
+            systemVersion: 26.3
+            orientation: UIDeviceOrientation(rawValue: 3)
+            identifierForVendor: ED3CBA8A-26D7-49B7-AC20-2EF1C6C9AEB9
+            batteryState: UIDeviceBatteryState(rawValue: 0)
+            batteryLevel: -1.0
+        }
+        pid: 3023
+        host bundle: 
+        swift-playgrounds-dev-previews.swift-playgrounds-app.hcxqsrflxfigqhbqgxgykyvesmcx.501.My-App {
+            url: file:///var/mobile/Containers/Data/Application/DF9F42DE-9E23-4D16-B9FD-85998CFF86DE/Library/Caches/com.apple.Playgrounds/DerivedData/My%20App%2032-hcxqsrflxfigqhbqgxgykyvesmcx/XCBuild/Products/Previews-iphoneos/My%20App.app
+            version: 4307
+            attributes: [
+                AgentRoleKey: Previews,
+            ]
+        }
+        builtTargetDescriptions: empty
+    }
+    Build Graph {
+        My App product (#3)
+           agent (#1)
+           PACKAGE-PRODUCT:My App (#4)
+              ContentView.swift (#2)
+    }
+    Update Plan {
+        BuildIdentifier(destination: PreviewsPipeline.RunDestinationRecipePair<PlaygroundFoundation.RunDestination>(recipe: LocalIOSDestinationRecipe(properties: Run Destination Properties {
+            platform: iphoneos
+            architecture: arm64
+            sdk: 
+            SDK {
+                path: /private/var/containers/Bundle/Application/79942ABC-0C41-411C-97F9-05AAC3FE1E83/Swift Playground.app/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
+                version: 18.1
+            }
+            runtimeVersion: 26.3
+            runtimeBuildNumber: 23D5089e
+            deviceIdentifier: 
+            supportsOnDevice: false
+        }), representation: PlaygroundFoundation.RunDestination), role: Previews) {
+            Destination: AnyRunDestinationRecipe  | default device for iphoneos [
+                Project Application - Previews {
+                    execution point packs [
+                        [source: agent, role: Previews, domain: application]
+                    ]
+                    translation units [
+                        ContentView.swift (compile in PACKAGE-PRODUCT:My App, link in My App product)
+                    ]
+                    modules [
+                        My App product
+                        PACKAGE-PRODUCT:My App
+                    ]
+                    jit link description [
+                        My App product {
+                            merged static libs [
+                                PACKAGE-PRODUCT:My App
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+
+
+
+== POWER STATE LOGS:
+
+    12/24/2025, 3:24 AM Received power source state: Battery Powered (lowPowerMode: false, status: unplugged, level: 55%)
+    12/24/2025, 3:24 AM Broadcasting device power state: Mid Power
+    12/24/2025, 3:24 AM No device power state user override user default value.Current power state: Mid Power
