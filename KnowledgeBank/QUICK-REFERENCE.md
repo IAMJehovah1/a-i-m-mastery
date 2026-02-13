@@ -18,6 +18,8 @@ Quick access to common topics and frequently referenced information.
 ### Workflow Setup
 ```javascript
 // Create workflow instance
+// Note: Use standard naming conventions for environment variables
+// e.g., MY_WORK_GOLDS or myWorkGolds instead of "My work Golds"
 const instance = await env["My work Golds"].create();
 
 // Get status

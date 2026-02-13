@@ -73,10 +73,12 @@ Curated external resources, documentation links, and reference materials.
 
 ## 🔗 Related Files
 
-The following files in the root directory are integrated into the Knowledge Bank:
-- `Siri Skill.txt` → [AI/Siri-Skills-Analysis.md](./KnowledgeBank/AI/Siri-Skills-Analysis.md)
-- `WorkFlowMastery.txt` → [Workflows/Workflow-Mastery-Guide.md](./KnowledgeBank/Workflows/Workflow-Mastery-Guide.md)
-- `SpecificAppOrderFlow.txt` → [Development/App-Order-Flow.md](./KnowledgeBank/Development/App-Order-Flow.md)
+The following files in the root directory have been organized into the Knowledge Bank:
+- `Siri Skill.txt` → Organized in [AI/Siri-Skills-Analysis.md](./KnowledgeBank/AI/Siri-Skills-Analysis.md)
+- `WorkFlowMastery.txt` → Organized in [Workflows/Workflow-Mastery-Guide.md](./KnowledgeBank/Workflows/Workflow-Mastery-Guide.md)
+- `SpecificAppOrderFlow.txt` → Organized in [Development/App-Order-Flow.md](./KnowledgeBank/Development/App-Order-Flow.md)
+
+**Note:** The original .txt files are preserved in the root directory for reference. The Knowledge Bank provides enhanced, structured versions with additional context and organization.
 
 ## 📖 How to Use This Repository
 

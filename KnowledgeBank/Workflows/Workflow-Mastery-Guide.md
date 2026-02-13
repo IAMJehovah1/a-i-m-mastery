@@ -23,6 +23,8 @@ A comprehensive guide to setting up workflow bindings and executing code to buil
 export default {
   async fetch(request, env, ctx) {
     // Create a new instance of the workflow
+    // Note: Replace "My work Golds" with your actual environment variable name
+    // Consider using standard naming: MY_WORK_GOLDS or myWorkGolds
     const instance = await env["My work Golds"].create();
     
     // Return the instance details and status
@@ -33,6 +35,12 @@ export default {
   },
 };
 ```
+
+### Environment Variable Naming Best Practices
+- Use `UPPER_SNAKE_CASE` for environment variables (e.g., `MY_WORK_GOLDS`)
+- Or use `camelCase` for JavaScript object properties (e.g., `myWorkGolds`)
+- Avoid spaces in variable names
+- Be consistent across your project
 
 ## Execution and Success
 
