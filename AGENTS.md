@@ -68,7 +68,7 @@ When working with code examples (like in `WorkFlowMastery.txt`):
 ## Important Considerations
 - This is a personal knowledge repository
 - Some file names contain special characters - preserve them
-- Submodule references (like www.openai.com) may be placeholders
+- Git submodule paths and URLs are defined in the `.gitmodules` file; refer to that file when updating submodules
 - Workflow code examples may reference specific environments (Cloudflare Workers)
 
 ## Common Tasks
