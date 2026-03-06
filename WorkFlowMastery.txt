@@ -47,7 +47,7 @@ export default {
     try {
       payload = await request.json();
     } catch (error) {
-      console.error("Failed to parse JSON in multi-agent request body", error);
+      console.error("Failed to parse request body", error);
       return new Response("Malformed JSON body", { status: 400 });
     }
 
@@ -69,21 +69,26 @@ export default {
         executor: `Execute: ${task}`,
         reviewer: `Review: ${task}`,
       }),
-      capability: async (coordinatedTasks) => coordinatedTasks, // Baseline placeholder: add tool execution, retries, and timeouts per role.
+      capability: async (tasks) => tasks, // TODO: Implement tool execution with retries/timeouts per role.
       memory: async (result) => {
         try {
           await env.MULTI_AGENT_STATE.put("last_result", JSON.stringify(result));
         } catch (error) {
-          throw new Error(`Failed to persist multi-agent state: ${String(error)}`);
+          throw new Error(`Failed to persist operation state: ${String(error)}`);
         }
       },
       outcome: (result) => ({ status: "complete", result }), // Baseline output: add scoring/conflict resolution in production.
     };
 
-    const safeTask = hierarchy.safety();
-    const coordinated = hierarchy.coordination(safeTask);
-    const executed = await hierarchy.capability(coordinated);
-    await hierarchy.memory(executed);
-    return Response.json(hierarchy.outcome(executed));
+    try {
+      const safeTask = hierarchy.safety();
+      const coordinated = hierarchy.coordination(safeTask);
+      const executed = await hierarchy.capability(coordinated);
+      await hierarchy.memory(executed);
+      return Response.json(hierarchy.outcome(executed));
+    } catch (error) {
+      console.error("Hierarchy pipeline failed", error);
+      return new Response("Multi-agent pipeline failure", { status: 500 });
+    }
   },
 };
