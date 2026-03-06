@@ -39,6 +39,8 @@ To have a Multi_Agent Hierarchy of Needs design code in place, implement these l
 5. Outcome Layer: Score outputs, resolve conflicts, and return one final response.
 
 Reference Design Code
+const DEFAULT_MAX_TASK_LENGTH = 2000;
+
 export default {
   async fetch(request, env) {
     let payload;
@@ -53,8 +55,8 @@ export default {
       return new Response("Invalid task payload", { status: 400 });
     }
 
-    // Keep prompt size bounded; move to env.MAX_TASK_LENGTH if you need runtime configuration.
-    const maxTaskLength = 2000;
+    // Keep prompt size bounded; override with env.MAX_TASK_LENGTH when needed.
+    const maxTaskLength = Number(env.MAX_TASK_LENGTH || DEFAULT_MAX_TASK_LENGTH);
     const hierarchy = {
       safety: () => payload.task.trim().slice(0, maxTaskLength),
       coordination: (task) => ({
@@ -63,7 +65,7 @@ export default {
         executor: `Execute: ${task}`,
         reviewer: `Review: ${task}`,
       }),
-      capability: async (roles) => roles,
+      capability: async (roles) => roles, // Baseline placeholder: add tool execution, retries, and timeouts per role.
       memory: async (result) => {
         try {
           await env.MULTI_AGENT_STATE.put("last_result", JSON.stringify(result));
@@ -71,7 +73,7 @@ export default {
           throw new Error(`Failed to persist multi-agent state: ${error.message}`);
         }
       },
-      outcome: (result) => ({ status: "complete", result }),
+      outcome: (result) => ({ status: "complete", result }), // Baseline output: add scoring/conflict resolution in production.
     };
 
     const safeTask = hierarchy.safety();
