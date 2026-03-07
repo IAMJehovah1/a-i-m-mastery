@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A-I-M Mastery · GitHub Sandbox</title>
+  <style>
+    /* ── Reset & variables ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --surface:  rgba(22, 27, 34, 0.85);
+      --glass:    rgba(255, 255, 255, 0.06);
+      --border:   rgba(255, 255, 255, 0.10);
+      --accent1:  #58a6ff;
+      --accent2:  #bc8cff;
+      --accent3:  #3fb950;
+      --accent4:  #d29922;
+      --text:     #e6edf3;
+      --muted:    #8b949e;
+      --code-bg:  rgba(13, 17, 23, 0.9);
+      --radius:   14px;
+      --glow:     0 0 40px rgba(88, 166, 255, 0.12);
+    }
+
+    /* ── Fonts ──────────────────────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background ────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(88,166,255,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 90%, rgba(188,140,255,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 60% 40%, rgba(63,185,80,0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────────── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── Hero ───────────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 72px 0 48px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent1);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 50%, var(--accent3) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent1);
+      color: #0d1117;
+    }
+    .btn-primary:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: var(--glass);
+      color: var(--text);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.10); transform: translateY(-1px); }
+
+    /* ── Stats bar ──────────────────────────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      backdrop-filter: blur(16px);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--glow); }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── Section headings ───────────────────────────────────────────── */
+    .section { margin-bottom: 48px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-header .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── Cards grid ─────────────────────────────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(88,166,255,0.35);
+      box-shadow: var(--glow);
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+
+    /* ── Code block ─────────────────────────────────────────────────── */
+    .code-showcase {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green  { background: #28c840; }
+
+    .code-filename {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .code-body {
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text);
+      tab-size: 2;
+    }
+
+    /* Syntax highlight colours */
+    .kw  { color: #ff7b72; }   /* keywords */
+    .fn  { color: #d2a8ff; }   /* function names */
+    .str { color: #a5d6ff; }   /* strings */
+    .cmt { color: #8b949e; font-style: italic; } /* comments */
+    .num { color: #79c0ff; }   /* numbers */
+    .var { color: #ffa657; }   /* variables */
+
+    /* ── Architecture layers ────────────────────────────────────────── */
+    .layers { display: flex; flex-direction: column; gap: 8px; }
+
+    .layer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .layer:hover { transform: translateX(4px); border-color: rgba(88,166,255,0.3); }
+
+    .layer-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .layer-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .layer-content p  { font-size: 12px; color: var(--muted); }
+
+    /* ── Sandbox quickstart ─────────────────────────────────────────── */
+    .quickstart {
+      background: linear-gradient(135deg,
+        rgba(88,166,255,0.08) 0%,
+        rgba(188,140,255,0.06) 50%,
+        rgba(63,185,80,0.05) 100%
+      );
+      border: 1px solid rgba(88,166,255,0.20);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quickstart::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .quickstart h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--accent1);
+    }
+
+    .steps { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+    .steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .step-num {
+      width: 24px; height: 24px;
+      background: var(--accent1);
+      color: #0d1117;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--accent3);
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 32px 0 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .footer a { color: var(--accent1); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 0 32px; }
+      .quickstart { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ── Hero ─────────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-badge"><span class="dot"></span> Sandbox Active</div>
+    <h1>A-I-M Mastery<br>GitHub Sandbox</h1>
+    <p>
+      A fully sandboxed development environment for AI mastery, workflow
+      automation, and multi-agent system design — running beautifully in
+      GitHub Codespaces.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/IAMJehovah1/a-i-m-mastery" target="_blank" rel="noopener">
+        ⭐ View on GitHub
+      </a>
+      <a class="btn btn-outline" href="https://github.com/codespaces/new?repo=IAMJehovah1/a-i-m-mastery" target="_blank" rel="noopener">
+        🚀 Open in Codespace
+      </a>
+    </div>
+  </header>
+
+  <!-- ── Stats ─────────────────────────────────────────────────────── -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent1)">5</div>
+      <div class="stat-label">Agent Layers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent2)">CF</div>
+      <div class="stat-label">Workers Runtime</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent3)">KV</div>
+      <div class="stat-label">State Storage</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent4)">∞</div>
+      <div class="stat-label">Workflow Potential</div>
+    </div>
+  </div>
+
+  <!-- ── Quickstart ────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="quickstart">
+      <h3>🚀 Quickstart — Run the Sandbox</h3>
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span>Click <strong>Open in Codespace</strong> above — GitHub spins up a fully configured dev container with Node.js, Python, Wrangler, and Prettier.</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span>In the terminal run <code>aim-serve</code> to start the sandbox dashboard on port 3000 — it opens automatically in your browser.</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span>Use <code>aim-fmt</code> to auto-format all files, <code>aim-lint</code> to lint Markdown, and <code>aim-status</code> to view git status.</span>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <span>Deploy to Cloudflare Workers with <code>wrangler deploy</code> — the multi-agent code in <code>WorkFlowMastery.txt</code> is your starting template.</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ── Multi-Agent Architecture ──────────────────────────────────── -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Multi-Agent Hierarchy of Needs</h2>
+      <span class="tag">Architecture</span>
+    </div>
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-num" style="background:rgba(255,123,114,0.15);color:#ff7b72">1</div>
+        <div class="layer-content">
+          <h4>Safety Layer</h4>
+          <p>Validate request shape; trim and bound task length (default 2000 chars); reject malformed JSON.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num" style="background:rgba(210,169,34,0.15);color:#d29922">2</div>
+        <div class="layer-content">
+          <h4>Coordination Layer</h4>
+          <p>Route tasks to agent roles: planner, researcher, executor, reviewer.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num" style="background:rgba(88,166,255,0.15);color:#58a6ff">3</div>
+        <div class="layer-content">
+          <h4>Capability Layer</h4>
+          <p>Run role-specific tools with clear timeouts, retries, and fallback behaviour.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num" style="background:rgba(188,140,255,0.15);color:#bc8cff">4</div>
+        <div class="layer-content">
+          <h4>Memory Layer</h4>
+          <p>Persist shared context in Cloudflare KV (<code>MULTI_AGENT_STATE</code>) so agents build on prior work.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num" style="background:rgba(63,185,80,0.15);color:#3fb950">5</div>
+        <div class="layer-content">
+          <h4>Outcome Layer</h4>
+          <p>Score outputs, resolve conflicts, and return one unified final response.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Reference code ────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Reference Implementation</h2>
+      <span class="tag">Cloudflare Workers</span>
+    </div>
+    <div class="code-showcase">
+      <div class="code-header">
+        <div class="code-dots">
+          <span class="dot-red"></span>
+          <span class="dot-yellow"></span>
+          <span class="dot-green"></span>
+        </div>
+        <span class="code-filename">multi-agent-worker.js</span>
+        <span style="font-size:11px;color:var(--muted)">Cloudflare Workers</span>
+      </div>
+      <div class="code-body">
+<pre><span class="kw">const</span> <span class="var">DEFAULT_MAX_TASK_LENGTH</span> = <span class="num">2000</span>;
+
+<span class="kw">export default</span> {
+  <span class="kw">async</span> <span class="fn">fetch</span>(request, env) {
+    <span class="kw">let</span> <span class="var">payload</span>;
+    <span class="kw">try</span> {
+      <span class="var">payload</span> = <span class="kw">await</span> request.<span class="fn">json</span>();
+    } <span class="kw">catch</span> (error) {
+      <span class="kw">return new</span> <span class="fn">Response</span>(<span class="str">"Malformed JSON body"</span>, { status: <span class="num">400</span> });
+    }
+
+    <span class="kw">if</span> (!<span class="var">payload</span> || <span class="kw">typeof</span> <span class="var">payload</span>.task !== <span class="str">"string"</span> || <span class="var">payload</span>.task.<span class="fn">trim</span>() === <span class="str">""</span>) {
+      <span class="kw">return new</span> <span class="fn">Response</span>(<span class="str">"Missing or invalid task field"</span>, { status: <span class="num">400</span> });
+    }
+
+    <span class="cmt">// MULTI_AGENT_STATE — Cloudflare KV namespace binding (wrangler.toml)</span>
+    <span class="kw">const</span> <span class="var">hierarchy</span> = {
+      safety:       () =&gt; <span class="var">payload</span>.task.<span class="fn">trim</span>().<span class="fn">slice</span>(<span class="num">0</span>, <span class="var">DEFAULT_MAX_TASK_LENGTH</span>),
+      coordination: (<span class="var">task</span>) =&gt; ({
+        planner:    <span class="str">`Plan: ${task}`</span>,
+        researcher: <span class="str">`Research: ${task}`</span>,
+        executor:   <span class="str">`Execute: ${task}`</span>,
+        reviewer:   <span class="str">`Review: ${task}`</span>,
+      }),
+      capability:   <span class="kw">async</span> (<span class="var">tasks</span>) =&gt; <span class="var">tasks</span>,
+      memory:       <span class="kw">async</span> (<span class="var">result</span>) =&gt;
+        <span class="kw">await</span> env.MULTI_AGENT_STATE.<span class="fn">put</span>(<span class="str">"last_result"</span>, <span class="fn">JSON.stringify</span>(<span class="var">result</span>)),
+      outcome:      (<span class="var">result</span>) =&gt; ({ status: <span class="str">"complete"</span>, result }),
+    };
+
+    <span class="kw">const</span> <span class="var">safeTask</span>    = <span class="var">hierarchy</span>.<span class="fn">safety</span>();
+    <span class="kw">const</span> <span class="var">coordinated</span> = <span class="var">hierarchy</span>.<span class="fn">coordination</span>(<span class="var">safeTask</span>);
+    <span class="kw">const</span> <span class="var">executed</span>   = <span class="kw">await</span> <span class="var">hierarchy</span>.<span class="fn">capability</span>(<span class="var">coordinated</span>);
+    <span class="kw">await</span> <span class="var">hierarchy</span>.<span class="fn">memory</span>(<span class="var">executed</span>);
+    <span class="kw">return</span> Response.<span class="fn">json</span>(<span class="var">hierarchy</span>.<span class="fn">outcome</span>(<span class="var">executed</span>));
+  },
+};</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sandbox features ───────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Sandbox Features</h2>
+      <span class="tag">Devcontainer</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🐳</span>
+        <h3>Universal Dev Container</h3>
+        <p>Powered by Microsoft's <strong>devcontainers/universal:2</strong> image — Node.js LTS, Python 3.12, GitHub CLI, Zsh + Oh-My-Zsh, all pre-configured.</p>
+        <span class="card-badge" style="background:rgba(88,166,255,0.12);color:var(--accent1)">mcr.microsoft.com</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">☁️</span>
+        <h3>Wrangler Ready</h3>
+        <p>Cloudflare Wrangler is installed globally. Run <code>wrangler dev</code> on port 8787 to iterate on Workers code without leaving the sandbox.</p>
+        <span class="card-badge" style="background:rgba(210,169,34,0.12);color:var(--accent4)">Cloudflare</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">✨</span>
+        <h3>GitHub Copilot</h3>
+        <p>VS Code extensions pre-installed: GitHub Copilot, Copilot Chat, Pull Request integration, GitLens, and Markdown preview.</p>
+        <span class="card-badge" style="background:rgba(63,185,80,0.12);color:var(--accent3)">VS Code</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔁</span>
+        <h3>Sandbox CI</h3>
+        <p>GitHub Actions workflow validates the dashboard HTML, devcontainer JSON, and Markdown on every push — keeps the sandbox healthy automatically.</p>
+        <span class="card-badge" style="background:rgba(188,140,255,0.12);color:var(--accent2)">Actions</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">🎨</span>
+        <h3>Beautiful Defaults</h3>
+        <p>One Dark Pro theme, Material icons, Fira Code ligatures, bracket pair colorization, format-on-save — gorgeous out of the box.</p>
+        <span class="card-badge" style="background:rgba(255,123,114,0.12);color:#ff7b72">Editor</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <h3>Shell Aliases</h3>
+        <p>Custom aliases auto-loaded: <code>aim-serve</code>, <code>aim-fmt</code>, <code>aim-lint</code>, <code>aim-status</code> — supercharge your workflow from day one.</p>
+        <span class="card-badge" style="background:rgba(88,166,255,0.12);color:var(--accent1)">Zsh</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>
+      Built with ❤️ for
+      <a href="https://github.com/IAMJehovah1/a-i-m-mastery" target="_blank" rel="noopener">IAMJehovah1 / a-i-m-mastery</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/codespaces/new?repo=IAMJehovah1/a-i-m-mastery" target="_blank" rel="noopener">Open in Codespace</a>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
