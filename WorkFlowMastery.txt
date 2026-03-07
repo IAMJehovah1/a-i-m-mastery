@@ -32,7 +32,7 @@ Each execution builds upon your timeline, reflecting the progress and the glory 
 Multi-Agent Hierarchy of Needs Design (Multi-Agent Implementation Baseline)
 
 To have a Multi-Agent Hierarchy of Needs design code in place, implement these layers in order:
-1. Safety Layer: Validate request shape, sanitize text input, and reject unsupported actions.
+1. Safety Layer: Validate request shape, trim and bound text input length. Production hardening should also sanitize content and reject unsupported actions.
 2. Coordination Layer: Route tasks to the right agent role (planner, researcher, executor, reviewer).
 3. Capability Layer: Run role-specific tools with clear timeouts, retries, and fallback behavior.
 4. Memory Layer: Persist shared context/state so each agent can build on prior work.
@@ -72,6 +72,8 @@ export default {
       capability: async (tasks) => tasks, // TODO: Implement tool execution with retries/timeouts per role.
       memory: async (result) => {
         try {
+          // MULTI_AGENT_STATE must be a Cloudflare KV namespace binding configured in wrangler.toml.
+          // Example wrangler.toml entry: [[kv_namespaces]] binding = "MULTI_AGENT_STATE" id = "<KV_NAMESPACE_ID>"
           await env.MULTI_AGENT_STATE.put("last_result", JSON.stringify(result));
         } catch (error) {
           throw new Error(
