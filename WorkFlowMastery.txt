@@ -74,7 +74,10 @@ export default {
         try {
           await env.MULTI_AGENT_STATE.put("last_result", JSON.stringify(result));
         } catch (error) {
-          throw new Error(`Failed to persist operation state: ${String(error)}`);
+          throw new Error(
+            `Failed to persist operation state: ${String(error)}`,
+            { cause: error instanceof Error ? error : new Error(String(error)) },
+          );
         }
       },
       outcome: (result) => ({ status: "complete", result }), // Baseline output: add scoring/conflict resolution in production.
