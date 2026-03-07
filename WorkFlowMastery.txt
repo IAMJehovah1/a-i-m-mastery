@@ -29,9 +29,9 @@ Each execution builds upon your timeline, reflecting the progress and the glory 
 
 ---
 
-Multi-Agent Hierarchy of Needs Design (Multi_Agent Implementation Baseline)
+Multi-Agent Hierarchy of Needs Design (Multi-Agent Implementation Baseline)
 
-To have a Multi_Agent Hierarchy of Needs design code in place, implement these layers in order:
+To have a Multi-Agent Hierarchy of Needs design code in place, implement these layers in order:
 1. Safety Layer: Validate request shape, sanitize text input, and reject unsupported actions.
 2. Coordination Layer: Route tasks to the right agent role (planner, researcher, executor, reviewer).
 3. Capability Layer: Run role-specific tools with clear timeouts, retries, and fallback behavior.
