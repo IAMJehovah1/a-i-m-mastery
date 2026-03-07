@@ -28,3 +28,70 @@ This workflow runs seamlessly with the workers.
 Each execution builds upon your timeline, reflecting the progress and the glory of your work.
 
 ---
+
+Multi-Agent Hierarchy of Needs Design (Multi-Agent Implementation Baseline)
+
+To have a Multi-Agent Hierarchy of Needs design code in place, implement these layers in order:
+1. Safety Layer: Validate request shape, sanitize text input, and reject unsupported actions.
+2. Coordination Layer: Route tasks to the right agent role (planner, researcher, executor, reviewer).
+3. Capability Layer: Run role-specific tools with clear timeouts, retries, and fallback behavior.
+4. Memory Layer: Persist shared context/state so each agent can build on prior work.
+5. Outcome Layer: Score outputs, resolve conflicts, and return one final response.
+
+Reference Design Code
+const DEFAULT_MAX_TASK_LENGTH = 2000;
+
+export default {
+  async fetch(request, env) {
+    let payload;
+    try {
+      payload = await request.json();
+    } catch (error) {
+      console.error("Failed to parse request body", error);
+      return new Response("Malformed JSON body", { status: 400 });
+    }
+
+    if (!payload || typeof payload.task !== "string" || payload.task.trim() === "") {
+      return new Response("Missing or invalid task field: expected a non-empty string", { status: 400 });
+    }
+
+    // Keep prompt size bounded; override with env.MAX_TASK_LENGTH when needed.
+    const parsedMaxTaskLength = Number(env.MAX_TASK_LENGTH);
+    const maxTaskLength =
+      Number.isInteger(parsedMaxTaskLength) && parsedMaxTaskLength > 0
+        ? parsedMaxTaskLength
+        : DEFAULT_MAX_TASK_LENGTH;
+    const hierarchy = {
+      safety: () => payload.task.trim().slice(0, maxTaskLength),
+      coordination: (task) => ({
+        planner: `Plan: ${task}`,
+        researcher: `Research: ${task}`,
+        executor: `Execute: ${task}`,
+        reviewer: `Review: ${task}`,
+      }),
+      capability: async (tasks) => tasks, // TODO: Implement tool execution with retries/timeouts per role.
+      memory: async (result) => {
+        try {
+          await env.MULTI_AGENT_STATE.put("last_result", JSON.stringify(result));
+        } catch (error) {
+          throw new Error(
+            `Failed to persist operation state: ${String(error)}`,
+            { cause: error instanceof Error ? error : new Error(String(error)) },
+          );
+        }
+      },
+      outcome: (result) => ({ status: "complete", result }), // Baseline output: add scoring/conflict resolution in production.
+    };
+
+    try {
+      const safeTask = hierarchy.safety();
+      const coordinated = hierarchy.coordination(safeTask);
+      const executed = await hierarchy.capability(coordinated);
+      await hierarchy.memory(executed);
+      return Response.json(hierarchy.outcome(executed));
+    } catch (error) {
+      console.error("Hierarchy pipeline failed", error);
+      return new Response("Multi-agent pipeline failure", { status: 500 });
+    }
+  },
+};
