@@ -1,0 +1,68 @@
+{
+  "name": "A-I-M Mastery Sandbox",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" },
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    "ghcr.io/devcontainers/features/github-cli:1": { "version": "latest" },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "yzhang.markdown-all-in-one",
+        "bierner.markdown-preview-github-styles",
+        "ms-vscode.live-server",
+        "PKief.material-icon-theme",
+        "zhuangtongfa.material-theme",
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode-remote.remote-containers"
+      ],
+      "settings": {
+        "workbench.colorTheme": "One Dark Pro",
+        "workbench.iconTheme": "material-icon-theme",
+        "editor.fontFamily": "'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace",
+        "editor.fontLigatures": true,
+        "editor.fontSize": 14,
+        "editor.lineHeight": 1.6,
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "terminal.integrated.fontFamily": "'Fira Code', monospace",
+        "terminal.integrated.fontSize": 13,
+        "workbench.startupEditor": "none",
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": true,
+        "files.autoSave": "afterDelay",
+        "files.autoSaveDelay": 1000,
+        "markdown.preview.breaks": true
+      }
+    },
+    "codespaces": {
+      "openFiles": ["README.md"]
+    }
+  },
+  "forwardPorts": [3000, 8080, 8787],
+  "portsAttributes": {
+    "3000": { "label": "Sandbox Dashboard", "onAutoForward": "openBrowser" },
+    "8080": { "label": "Dev Server" },
+    "8787": { "label": "Wrangler (Cloudflare)" }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postAttachCommand": "echo '🚀 A-I-M Mastery Sandbox is ready! Open sandbox/index.html to explore.'",
+  "remoteEnv": {
+    "SANDBOX_ENV": "github-codespaces",
+    "NODE_ENV": "development"
+  }
+}

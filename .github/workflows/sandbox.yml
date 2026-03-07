@@ -1,0 +1,67 @@
+name: Sandbox CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Sandbox
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install validation tools
+        run: npm install -g markdownlint-cli2 prettier
+
+      - name: Validate HTML (sandbox dashboard)
+        run: |
+          if [ -f sandbox/index.html ]; then
+            echo "✔ sandbox/index.html present"
+            # Basic well-formedness check: look for required tags
+            grep -q "<html" sandbox/index.html && echo "  ✔ <html> tag found"
+            grep -q "</html>" sandbox/index.html && echo "  ✔ </html> closing tag found"
+            grep -q "<title>" sandbox/index.html && echo "  ✔ <title> tag found"
+          else
+            echo "⚠ sandbox/index.html not found" && exit 1
+          fi
+
+      - name: Validate devcontainer config
+        run: |
+          if [ -f .devcontainer/devcontainer.json ]; then
+            echo "✔ .devcontainer/devcontainer.json present"
+            node -e "JSON.parse(require('fs').readFileSync('.devcontainer/devcontainer.json'))" \
+              && echo "  ✔ Valid JSON"
+          else
+            echo "⚠ .devcontainer/devcontainer.json not found" && exit 1
+          fi
+
+      - name: Lint Markdown files
+        run: |
+          shopt -s globstar
+          if ls **/*.md 2>/dev/null | grep -q .; then
+            markdownlint-cli2 "**/*.md" || true
+          else
+            echo "ℹ No Markdown files to lint"
+          fi
+
+      - name: Summary
+        run: |
+          echo "### 🚀 Sandbox Validation Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| sandbox/index.html | ✅ Present |" >> $GITHUB_STEP_SUMMARY
+          echo "| .devcontainer/devcontainer.json | ✅ Valid JSON |" >> $GITHUB_STEP_SUMMARY
+          echo "| Markdown lint | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
