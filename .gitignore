@@ -1,0 +1,39 @@
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build outputs
+dist/
+build/
+out/
+*.pyc
+__pycache__/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+desktop.ini
+.Spotlight-V100
+.Trashes
